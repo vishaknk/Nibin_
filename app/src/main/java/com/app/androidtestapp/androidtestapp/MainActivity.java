@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements ResponseService, ItemsListAdapter.InformationInterface {
 
     private MainActivityFragment listFragment;
-    ArrayList<JSONItems> itemsArrayList;
+    private ArrayList<JSONItems> itemsArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +25,7 @@ public class MainActivity extends AppCompatActivity implements ResponseService, 
         WebInterfaceManager webInterfaceManager = new WebInterfaceManager(this);
         listFragment = new MainActivityFragment();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_fragmentArea, listFragment)
-                .commit();
+                .replace(R.id.fl_fragmentArea, listFragment).commit();
         webInterfaceManager.getProductData();
     }
 
@@ -53,13 +52,16 @@ public class MainActivity extends AppCompatActivity implements ResponseService, 
         bundle.putString("desc", itemsArrayList.get(position).getDescription());
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fl_fragmentArea, fragment)
-                .addToBackStack("Fragment1")
-                .commit();
+                .replace(R.id.fl_fragmentArea, fragment).commit();
     }
-
-
+    //interface to pass data to fragment
     public  interface FragmentInterface{
         public void passData(ArrayList<JSONItems> items);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
     }
 }
